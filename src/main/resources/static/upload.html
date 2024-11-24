@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>File Upload and API Call</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<h1>File Upload and API Call</h1>
+<input type="file" id="fileInput">
+<button onclick="uploadFile()">Upload File</button>
+
+<script>
+    function uploadFile() {
+        const fileInput = document.getElementById('fileInput');
+        const file = fileInput.files[0];
+
+        // Create a FormData object to send the file
+        const formData = new FormData();
+        formData.append('file', file);
+
+        // API endpoint URL
+        const apiUrl = 'http://localhost:8080/photos';
+
+        // Make the API request
+        fetch(apiUrl, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('API response:', data);
+            // Handle the API response here, e.g., display a success message
+            alert('File uploaded successfully!');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Handle errors, e.g., display an error message
+            alert('Error uploading file. Please try again.');
+        });
+    }
+</script>
+</body>
+</html>
